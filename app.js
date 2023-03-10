@@ -17,17 +17,17 @@ require("./config")(app);
 const {isAuthenticated}= require ("./middleware/jwt.middleware");
 
 // 👇 Start handling routes here
-const indexRoutes = require("./routes/index.routes");
-app.use("/xxx", indexRoutes);
-
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
+
+const indexRoutes = require("./routes/index.routes");
+app.use("/api", indexRoutes);
 
 const charityRoutes = require("./routes/charity.routes");
 app.use("/api", charityRoutes);
 
-const userRoutes = require("./routes/user.routes");
-app.use("/xxx", userRoutes);
+/*const userRoutes = require("./routes/user.routes");
+app.use("/api", userRoutes);*/
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);

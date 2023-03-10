@@ -75,12 +75,20 @@ router.post("/signup", (req, res, next) => {
     .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
 });
 
-
-//SignUp for charity 
+//SignUp for charity
 
 // POST /auth/signup  - Creates a new user in the database
 router.post("/signupcharity", (req, res, next) => {
-  const { email, password, name, typeofCharity, urgencyNumber, image, description, urlLink} = req.body;
+  const {
+    email,
+    password,
+    name,
+    typeofCharity,
+    urgencyNumber,
+    image,
+    description,
+    urlLink,
+  } = req.body;
 
   // Check if email or password or name are provided as empty strings
   if (email === "" || password === "" || name === "") {
@@ -120,25 +128,48 @@ router.post("/signupcharity", (req, res, next) => {
 
       // Create the new user in the database
       // We return a pending promise, which allows us to chain another `then`
-      return Charity.create({ email, password: hashedPassword, name, typeofCharity, urgencyNumber, image, description, urlLink});
-
+      return Charity.create({
+        email,
+        password: hashedPassword,
+        name,
+        typeofCharity,
+        urgencyNumber,
+        image,
+        description,
+        urlLink,
+      });
     })
     .then((createdCharity) => {
       // Deconstruct the newly created user object to omit the password
       // We should never expose passwords publicly
-      const { email, name, _id, typeofCharity, urgencyNumber, image, description, urlLink} = createdCharity;
+      const {
+        email,
+        name,
+        _id,
+        typeofCharity,
+        urgencyNumber,
+        image,
+        description,
+        urlLink,
+      } = createdCharity;
 
       // Create a new object that doesn't expose the password
-      const charity = { email, name, _id, typeofCharity, urgencyNumber, image, description, urlLink };
+      const charity = {
+        email,
+        name,
+        _id,
+        typeofCharity,
+        urgencyNumber,
+        image,
+        description,
+        urlLink,
+      };
 
       // Send a json response containing the user object
       res.status(201).json({ charity: charity });
     })
     .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
 });
-
-
-
 
 // POST  /auth/login - Verifies email and password and returns a JWT
 router.post("/login", (req, res, next) => {
@@ -154,31 +185,65 @@ router.post("/login", (req, res, next) => {
   User.findOne({ email })
     .then((foundUser) => {
       if (!foundUser) {
-        // If the user is not found, send an error response
-        res.status(401).json({ message: "User not found." });
-        return;
-      }
+        Charity.findOne({ email })
+          .then((foundUser) => {
+            if (!foundUser) {
+              res.status(401).json({ message: "User not found." });
+              return;
+            }
+            // Compare the provided password with the one saved in the database
+            const passwordCorrect = bcrypt.compareSync(
+              password,
+              foundUser.password
+            );
 
-      // Compare the provided password with the one saved in the database
-      const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
+            if (passwordCorrect) {
+              // Deconstruct the user object to omit the password
+              const { _id, email, name } = foundUser;
 
-      if (passwordCorrect) {
-        // Deconstruct the user object to omit the password
-        const { _id, email, name } = foundUser;
+              // Create an object that will be set as the token payload
+              const payload = { _id, email, name };
 
-        // Create an object that will be set as the token payload
-        const payload = { _id, email, name };
+              // Create a JSON Web Token and sign it
+              const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+                algorithm: "HS256",
+                expiresIn: "6h",
+              });
 
-        // Create a JSON Web Token and sign it
-        const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
-          algorithm: "HS256",
-          expiresIn: "6h",
-        });
+              // Send the token as the response
+              res.status(200).json({ authToken: authToken });
+            } else {
+              res
+                .status(401)
+                .json({ message: "Unable to authenticate the user" });
+            }
+          })
+          .catch((err) => next(err));
+      } else if (foundUser) {
+        // Compare the provided password with the one saved in the database
+        const passwordCorrect = bcrypt.compareSync(
+          password,
+          foundUser.password
+        );
 
-        // Send the token as the response
-        res.status(200).json({ authToken: authToken });
-      } else {
-        res.status(401).json({ message: "Unable to authenticate the user" });
+        if (passwordCorrect) {
+          // Deconstruct the user object to omit the password
+          const { _id, email, name } = foundUser;
+
+          // Create an object that will be set as the token payload
+          const payload = { _id, email, name };
+
+          // Create a JSON Web Token and sign it
+          const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+            algorithm: "HS256",
+            expiresIn: "6h",
+          });
+
+          // Send the token as the response
+          res.status(200).json({ authToken: authToken });
+        } else {
+          res.status(401).json({ message: "Unable to authenticate the user" });
+        }
       }
     })
     .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.

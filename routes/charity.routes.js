@@ -3,19 +3,6 @@ const mongoose = require('mongoose');
 
 const Charity = require('../models/Charity.model');
 
-// Create 
-
-/*router.post("/charities", async (req, res) => {
-  const { name, email, password, typeofCharity } = req.body;
-
-  try {
-    const charity = await Charity.create({ name, email, password, typeofCharity});
-    res.json(charity);
-  } catch (error) {
-    res.status(400).json({ message: "Error creating harity" });
-  }
-});*/
-
 // Read (all)
 router.get("/charities", async (req, res) => {
   try {
