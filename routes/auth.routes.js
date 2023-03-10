@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
+const Charity = require("../models/Charity.model");
 
 // Require necessary (isAuthenticated) middleware in order to control access to specific routes
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
@@ -79,7 +80,7 @@ router.post("/signup", (req, res, next) => {
 
 // POST /auth/signup  - Creates a new user in the database
 router.post("/signupcharity", (req, res, next) => {
-  const { email, password, name, typeofCharity, urgencyNumber, image, description, UrlLink} = req.body;
+  const { email, password, name, typeofCharity, urgencyNumber, image, description, urlLink} = req.body;
 
   // Check if email or password or name are provided as empty strings
   if (email === "" || password === "" || name === "") {
@@ -105,10 +106,10 @@ router.post("/signupcharity", (req, res, next) => {
   }
 
   // Check the users collection if a user with the same email already exists
-  User.findOne({ email })
-    .then((foundUser) => {
+  Charity.findOne({ email })
+    .then((foundCharity) => {
       // If the user with the same email already exists, send an error response
-      if (foundUser) {
+      if (foundCharity) {
         res.status(400).json({ message: "User already exists." });
         return;
       }
@@ -119,19 +120,19 @@ router.post("/signupcharity", (req, res, next) => {
 
       // Create the new user in the database
       // We return a pending promise, which allows us to chain another `then`
-      return User.create({ email, password: hashedPassword, name, typeofCharity, urgencyNumber, image, description, UrlLink});
+      return Charity.create({ email, password: hashedPassword, name, typeofCharity, urgencyNumber, image, description, urlLink});
 
     })
-    .then((createdUser) => {
+    .then((createdCharity) => {
       // Deconstruct the newly created user object to omit the password
       // We should never expose passwords publicly
-      const { email, name, _id } = createdUser;
+      const { email, name, _id, typeofCharity, urgencyNumber, image, description, urlLink} = createdCharity;
 
       // Create a new object that doesn't expose the password
-      const user = { email, name, _id };
+      const charity = { email, name, _id, typeofCharity, urgencyNumber, image, description, urlLink };
 
       // Send a json response containing the user object
-      res.status(201).json({ user: user });
+      res.status(201).json({ charity: charity });
     })
     .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
 });

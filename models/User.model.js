@@ -18,7 +18,8 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
-    role: {type:String, enum:["user", "charity"], required: true}
+
+   /* role: {type:String, enum:["user", "charity"], required: true}*/
     
   },
   {

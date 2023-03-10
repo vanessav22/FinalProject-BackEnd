@@ -55,7 +55,7 @@ router.put("/charities/:id", async (req, res) => {
   try {
     const updatedCharity = await Charity.findByIdAndUpdate(
       id,
-      { email, password, name, typeofCharity, urgencyNumber, image, description, UrlLink},
+      { email, name, typeofCharity, urgencyNumber, image, description, UrlLink},
       { new: true }
     );
     if (!updatedCharity) {

@@ -35,7 +35,7 @@ const charitySchema = new Schema(
         type: String,
       },
 
-      UrlLink: {
+      urlLink: {
         type: String, 
       },
 
