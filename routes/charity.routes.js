@@ -45,7 +45,16 @@ router.get("/charities/:id", async (req, res) => {
 // Update
 router.put("/charities/:id", async (req, res) => {
   const { id } = req.params;
-  const { email, password, name, typeofCharity, urgencyNumber, image, description, UrlLink} = req.body;
+  const {
+    email,
+    password,
+    name,
+    typeofCharity,
+    urgencyNumber,
+    image,
+    description,
+    UrlLink,
+  } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(400).json({ message: "Invalid charity id" });
@@ -55,7 +64,15 @@ router.put("/charities/:id", async (req, res) => {
   try {
     const updatedCharity = await Charity.findByIdAndUpdate(
       id,
-      { email, name, typeofCharity, urgencyNumber, image, description, UrlLink},
+      {
+        email,
+        name,
+        typeofCharity,
+        urgencyNumber,
+        image,
+        description,
+        UrlLink,
+      },
       { new: true }
     );
     if (!updatedCharity) {
