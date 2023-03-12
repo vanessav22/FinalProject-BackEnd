@@ -1,13 +1,12 @@
-const router = require('express').Router();
-const mongoose = require('mongoose');
+const router = require("express").Router();
+const mongoose = require("mongoose");
 
-const Charity = require('../models/Charity.model');
+const Charity = require("../models/Charity.model");
 
-// Create 
+// Create
 
 /*router.post("/charities", async (req, res) => {
   const { name, email, password, typeofCharity } = req.body;
-
   try {
     const charity = await Charity.create({ name, email, password, typeofCharity});
     res.json(charity);

@@ -138,8 +138,6 @@ router.post("/signupcharity", (req, res, next) => {
 });
 
 
-
-
 // POST  /auth/login - Verifies email and password and returns a JWT
 router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
