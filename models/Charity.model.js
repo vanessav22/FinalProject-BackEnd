@@ -27,7 +27,7 @@ const charitySchema = new Schema(
     },
 
     urgencyNumber: {
-      type: Number,
+      type: String,
     },
 
     description: {
