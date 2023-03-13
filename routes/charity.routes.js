@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 
 const Charity = require("../models/Charity.model");
 
+const fileUploader = require('../config/cloudinary.config');
+
 // Create
 
 /*router.post("/charities", async (req, res) => {
