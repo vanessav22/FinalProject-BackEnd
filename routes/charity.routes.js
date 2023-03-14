@@ -28,7 +28,7 @@ router.get("/charities", async (req, res) => {
 });
 
 // Read (by id)
-router.get("/charities/:id", async (req, res) => {
+router.get("/charity/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -44,7 +44,7 @@ router.get("/charities/:id", async (req, res) => {
 });
 
 // Update
-router.put("/charities/:id", async (req, res) => {
+router.put("/charity/:id", async (req, res) => {
   const { id } = req.params;
   const {
     email,
@@ -87,7 +87,7 @@ router.put("/charities/:id", async (req, res) => {
 });
 
 // Delete
-router.delete("/charities/:id", async (req, res) => {
+router.delete("/charity/:id", async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
