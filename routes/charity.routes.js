@@ -28,7 +28,7 @@ router.get("/charities", async (req, res) => {
 });
 
 // Read (by id)
-router.get("/charity/:id", async (req, res) => {
+router.get("/charities/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
