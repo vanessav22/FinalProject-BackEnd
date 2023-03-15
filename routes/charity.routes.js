@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const Charity = require("../models/Charity.model");
 
-const fileUploader = require('../config/cloudinary.config');
+const fileUploader = require("../config/cloudinary.config");
 
 // Create
 
@@ -32,7 +32,14 @@ router.get("/charities/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const charity = await Charity.findById(id).populate("reviews");
+    const charity = await Charity.findById(id).populate({
+      path: "reviews",
+      populate: {
+        path: "userId",
+        model: "User",
+      },
+    });
+
     if (!charity) {
       res.status(404).json({ message: "Charity not found" });
     } else {

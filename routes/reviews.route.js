@@ -42,4 +42,23 @@ router.get("/reviews/:charityId", async (req, res) => {
     res.status(500).send(error);
   }
 });
+
+router.delete("/delete-review/:reviewId/:charityId", async (req, res) => {
+  const { reviewId, charityId } = req.params;
+  try {
+    const deleted = await Review.findByIdAndRemove(reviewId);
+
+    const updateCharity = await Charity.findByIdAndUpdate(
+      charityId,
+      {
+        $pull: { reviews: reviewId },
+      },
+      { new: true }
+    );
+    res.json(updateCharity);
+  } catch (error) {
+    res.status(400).json({ message: "Error deleting review" });
+  }
+});
+
 module.exports = router;
