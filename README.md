@@ -14,7 +14,7 @@ This is an app to help people to find charity associations in Lisbon. In this ap
 can registry. The charity will be allocated under specific topic and in this way will be easier for the users to find the charity
 that they want to help. The users can leave a coment.
 
-Welcome to our charity website, where you can make a difference and help those in need. We offer a variety of charitable options to choose from, so you can find the cause that speaks to your heart.
+Welcome to our Caring Communities website, where you can make a difference and help those in need. We offer a variety of charitable options to choose from, so you can find the cause that speaks to your heart.
 Our mission is to create a world where everyone has access to basic necessities, equal opportunities, and a better quality of life.
 We believe that every act of kindness and generosity can make a significant impact, and that's why we offer various ways for you to contribute, including donations or volunteering. Whether you want to donate money to support a particular project, give your time to help with a local initiative.
 We are grateful for your interest in helping the community, and we hope that you'll find an opportunity to get involved and make a positive impact on the lives of those who need it most. Together, we can build a brighter future for everyone.
